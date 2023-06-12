@@ -39,7 +39,6 @@ async function run() {
     })
 
 
-
     // users related task
     app.get('/users', async (req, res) => {
       const result = await usersCollection.find().toArray();
