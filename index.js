@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 // middleware
@@ -63,7 +63,7 @@ async function run() {
 
     app.get('/selectedclass', async (req, res) => {
       const email = req.query.email;
-      console.log(email);
+      console.log(email)
   
 
       if (!email) {
@@ -78,6 +78,7 @@ async function run() {
       const query = { email: email };
       const result = await selectedClassCollection.find(query).toArray();
       res.send(result);
+      
     });
 
     app.post('/selectedclass', async (req, res) => {
