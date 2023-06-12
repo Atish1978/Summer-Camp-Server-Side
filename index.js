@@ -29,10 +29,67 @@ async function run() {
     // await client.connect();
 
     const campDataCollection = client.db("summerCamp").collection("campdata");
+    const usersCollection = client.db("summerCamp").collection("users");
+    const selectedClassCollection = client.db("summerCamp").collection("selectedclass");
 
     app.get('/campdata', async (req, res) => {
       const cursor = campDataCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
+
+    // users related task
+    app.get('/users', async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email }
+      const existingUser = await usersCollection.findOne(query);
+
+      if (existingUser) {
+        return res.send({ message: 'user already exists' })
+      }
+
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
+
+    // selected classes related 
+
+    app.get('/selectedclass', async (req, res) => {
+      const email = req.query.email;
+      console.log(email);
+  
+
+      if (!email) {
+       res.send([]);
+      }
+
+      // const decodedEmail = req.decoded.email;
+      // if (email !== decodedEmail) {
+      //   return res.status(403).send({ error: true, message: 'forbidden access' })
+      // }
+
+      const query = { email: email };
+      const result = await selectedClassCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.post('/selectedclass', async (req, res) => {
+      const item = req.body;
+      const result = await selectedClassCollection.insertOne(item);
+      res.send(result);
+    })
+
+    app.delete('/selectedclass/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await selectedClassCollection.deleteOne(query);
       res.send(result);
     })
 
