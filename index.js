@@ -65,7 +65,6 @@ async function run() {
       const email = req.query.email;
       console.log(email)
   
-
       if (!email) {
        res.send([]);
       }
