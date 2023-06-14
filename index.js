@@ -70,11 +70,6 @@ async function run() {
        res.send([]);
       }
 
-      // const decodedEmail = req.decoded.email;
-      // if (email !== decodedEmail) {
-      //   return res.status(403).send({ error: true, message: 'forbidden access' })
-      // }
-
       const query = { email: email };
       const result = await selectedClassCollection.find(query).toArray();
       res.send(result);
@@ -105,9 +100,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-
-
 
 app.get('/', (req, res) => {
     res.send('Summer Camp is running')
